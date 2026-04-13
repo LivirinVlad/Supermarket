@@ -11,20 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supermarket.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supermarket.Infrastructure", "Supermarket.Infrastructure\Supermarket.Infrastructure.csproj", "{5DD14552-B825-4C39-9ADD-4CBD4FC36562}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "frontend", "frontend", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
-	ProjectSection(SolutionItems) = preProject
-		supermarket.web\.gitignore = supermarket.web\.gitignore
-		supermarket.web\eslint.config.js = supermarket.web\eslint.config.js
-		supermarket.web\index.html = supermarket.web\index.html
-		supermarket.web\package-lock.json = supermarket.web\package-lock.json
-		supermarket.web\package.json = supermarket.web\package.json
-		supermarket.web\README.md = supermarket.web\README.md
-		supermarket.web\tsconfig.app.json = supermarket.web\tsconfig.app.json
-		supermarket.web\tsconfig.json = supermarket.web\tsconfig.json
-		supermarket.web\tsconfig.node.json = supermarket.web\tsconfig.node.json
-		supermarket.web\vite.config.ts = supermarket.web\vite.config.ts
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
