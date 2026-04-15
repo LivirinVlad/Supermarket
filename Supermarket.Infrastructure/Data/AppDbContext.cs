@@ -47,7 +47,7 @@ public class AppDbContext : DbContext
             entity.HasOne(p => p.Category)
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict); // важливо
+                .OnDelete(DeleteBehavior.SetNull);
         });
     }
 
@@ -62,7 +62,7 @@ public class AppDbContext : DbContext
             entity.HasOne(c => c.ParentCategory)
                 .WithMany(c => c.SubCategories)
                 .HasForeignKey(c => c.ParentCategoryId)
-                .OnDelete(DeleteBehavior.Restrict); // щоб не було каскадного хаосу
+                .OnDelete(DeleteBehavior.Restrict); 
         });
     }
 

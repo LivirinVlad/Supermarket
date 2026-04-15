@@ -17,8 +17,8 @@ namespace Supermarket.Domain.Entities
         public bool IsActive { get; set; } = true;
 
         // Category (1:N)
-        public int CategoryId { get; set; }
-        public Category Category { get; set; } = null!;
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
 
         // Tags (M:N)
         public ICollection<Tag> Tags { get; set; } = new List<Tag>();

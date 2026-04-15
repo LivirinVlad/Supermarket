@@ -12,12 +12,12 @@ namespace Supermarket.Domain.Entities
 
         public string Name { get; set; } = null!;
 
-        // Ієрархія
+        // Hierarchy
         public int? ParentCategoryId { get; set; }
         public Category? ParentCategory { get; set; }
         public ICollection<Category> SubCategories { get; set; } = new List<Category>();
 
-        // Зв’язок з товарами
+        // Product connections
         public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

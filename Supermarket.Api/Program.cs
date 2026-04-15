@@ -1,6 +1,15 @@
 
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Supermarket.Application;
+using Supermarket.Application.Interfaces;
+using Supermarket.Application.Mapping;
+using Supermarket.Application.Services;
+using Supermarket.Infrastructure;
 using Supermarket.Infrastructure.Data;
+using Supermarket.Infrastructure.Repositories;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
@@ -20,12 +31,15 @@ builder.Services.AddCors(options =>
                    .AllowAnyMethod();
         });
 });
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
+
+
 var app = builder.Build();
 
-app.UseCors("AllowFrontend");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -34,6 +48,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
