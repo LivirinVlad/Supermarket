@@ -1,7 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { ProductsApi } from '../../../core/api/products.api';
 import { Product } from '../models/product.model';
-
+import { CreateProduct } from '../models/create-product.model';
+import { UpdateProduct } from '../models/update-product.model';
 @Injectable()
 export class ProductsService {
 
@@ -12,19 +13,19 @@ export class ProductsService {
 
   loadProducts() {
     this.api.getAll().subscribe(data => {
+      console.log('API DATA:', data);
       this._products.set(data ?? []);
     });
   }
 
-  create(product: Product) {
-    this.api.create(product).subscribe(() => {
-      this.loadProducts();
-    });
-  }
-
-  update(product: Product) {
-    this.api.update(product).subscribe(() => {
-      this.loadProducts();
-    });
-  }
+create(product: CreateProduct) {
+  this.api.create(product).subscribe(() => {
+    this.loadProducts();
+  });
+}
+update(id: string, product: UpdateProduct) {
+  this.api.update(id, product).subscribe(() => {
+    this.loadProducts();
+  });
+}
 }

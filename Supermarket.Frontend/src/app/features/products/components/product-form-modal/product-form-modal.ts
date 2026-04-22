@@ -17,27 +17,29 @@ export class ProductFormModalComponent {
   @Output() save = new EventEmitter<any>();
   @Output() close = new EventEmitter<void>();
 
-  model: any = {
-    name: '',
-    price: 0,
-    stockQuantity: 0,
-    isActive: true
-  };
+model: any = {
+  name: '',
+  description: '',
+  price: 0
+};
 
-  ngOnChanges() {
-    if (this.product) {
-      this.model = { ...this.product };
-    } else {
-      this.model = {
-        name: '',
-        price: 0,
-        stockQuantity: 0,
-        isActive: true
-      };
-    }
+ngOnChanges() {
+  if (this.product) {
+    this.model = {
+      name: this.product.name,
+      description: this.product.description ?? '',
+      price: this.product.price
+    };
+  } else {
+    this.model = {
+      name: '',
+      description: '',
+      price: 0
+    };
   }
+}
 
-  onSave() {
-    this.save.emit(this.model);
-  }
+onSave() {
+  this.save.emit(this.model);
+}
 }

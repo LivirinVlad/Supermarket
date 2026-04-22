@@ -1,10 +1,11 @@
-
-
+<!-- PRODUCTS LIST -->
 <app-product-list
   [products]="productsService.products()"
-  (edit)="openEdit($event)">
+  (edit)="openEdit($event)"
+  (stock)="openStock($event)">
 </app-product-list>
 
+<!-- PRODUCT FORM MODAL -->
 <app-product-form-modal
   [open]="isModalOpen"
   [product]="selectedProduct"
@@ -12,6 +13,15 @@
   (close)="closeModal()">
 </app-product-form-modal>
 
+<!-- STOCK MOVEMENT MODAL -->
+<app-stock-movement-modal
+  [open]="isStockModalOpen"
+  [product]="selectedProduct"
+  (close)="closeStockModal()"
+  (save)="createMovement($event)">
+</app-stock-movement-modal>
+
+<!-- ADD BUTTON -->
 <button
   class="bg-blue-500 text-white px-4 py-2 rounded mb-4"
   (click)="openCreate()">

@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../../features/products/models/product.model';
 import { CreateProduct } from '../../features/products/models/create-product.model';
-
+import { UpdateProduct } from '../../features/products/models/update-product.model';
 @Injectable({ providedIn: 'root' })
 export class ProductsApi {
 
@@ -18,10 +18,8 @@ export class ProductsApi {
     return this.http.post<Product>(this.baseUrl, product);
   }
 
-  update(product: Product) {
-    return this.http.put<Product>(
-      `${this.baseUrl}/${product.id}`,
-      product
-    );
-  }
+update(id: string, product: UpdateProduct) {
+  return this.http.put(`${this.baseUrl}/${id}`, product);
+}
+
 }

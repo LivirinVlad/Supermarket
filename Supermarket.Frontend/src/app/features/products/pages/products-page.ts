@@ -1,27 +1,52 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { ProductsService } from '../services/products.service';
 import { ProductListComponent } from '../components/product-list/product-list';
 import { ProductFormModalComponent } from '../components/product-form-modal/product-form-modal';
+
 import { Product } from '../models/product.model';
+import { CreateProduct } from '../models/create-product.model';
+
+import { StockService } from '../../inventory/services/stock.service';
+import { StockMovementModalComponent } from '../../inventory/components/stock-movement-modal/stock-movement-modal';
+import { CreateStockMovement } from '../../inventory/models/stock-movement.model';
 
 @Component({
   standalone: true,
   selector: 'app-products-page',
-  imports: [CommonModule, ProductListComponent, ProductFormModalComponent],
-  providers: [ProductsService],
+  imports: [
+    CommonModule,
+    ProductListComponent,
+    ProductFormModalComponent,
+    StockMovementModalComponent
+  ],
+  providers: [ProductsService, StockService],
   templateUrl: './products-page.html'
 })
 export class ProductsPage implements OnInit {
 
-  isModalOpen = false;
+  //  PRODUCTS
   selectedProduct: Product | null = null;
 
-  constructor(public productsService: ProductsService) {}
+  //  PRODUCT MODAL
+  isModalOpen = false;
+
+  //  STOCK MODAL
+  isStockModalOpen = false;
+
+  constructor(
+    public productsService: ProductsService,
+    private stockService: StockService
+  ) {}
 
   ngOnInit(): void {
     this.productsService.loadProducts();
   }
+
+  // =========================
+  // PRODUCT LOGIC
+  // =========================
 
   openCreate() {
     this.selectedProduct = null;
@@ -37,22 +62,40 @@ export class ProductsPage implements OnInit {
     this.isModalOpen = false;
   }
 
-  save(product: Product) {
-    if (this.selectedProduct) {
-      this.productsService.update(product);
-    } else {
-      this.productsService.create(product);
-    }
-
-    this.closeModal();
+  save(product: CreateProduct) {
+  if (this.selectedProduct) {
+    this.productsService.update(this.selectedProduct.id, product);
+  } else {
+    this.productsService.create(product);
   }
+
+  this.closeModal();
 }
 
-  // addTestProduct() {
-  // this.productsService.create({
-  //   name: 'Test product',
-  //   price: 10,
-  //   stockQuantity: 5,
-  //   isActive: true
-  // });
-  // }
+  // =========================
+  // STOCK LOGIC
+  // =========================
+
+  openStock(product: Product) {
+    this.selectedProduct = product;
+    this.isStockModalOpen = true;
+  }
+
+  closeStockModal() {
+    this.isStockModalOpen = false;
+  }
+
+  createMovement(data: CreateStockMovement) {
+    if (!this.selectedProduct) return;
+
+    this.stockService.create({
+      productId: this.selectedProduct.id,
+      quantity: data.quantity,
+      type: data.type,
+      note: data.note
+    }).subscribe(() => {
+      this.productsService.loadProducts();
+      this.closeStockModal();
+    });
+  }
+}
