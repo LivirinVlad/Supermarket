@@ -6,9 +6,9 @@ namespace Supermarket.Infrastructure.Data;
 public class AppDbContext : DbContext
 {
     public DbSet<Product> Products { get; set; }
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Tag> Tags { get; set; }
-    public DbSet<ProductBatch> ProductBatches { get; set; }
+    public DbSet<StockMovement> StockMovements { get; set; }
+
+
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -20,11 +20,28 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         ConfigureProduct(modelBuilder);
-        ConfigureCategory(modelBuilder);
-        ConfigureTag(modelBuilder);
-        ConfigureProductBatch(modelBuilder);
+        ConfigureStockMovement(modelBuilder);
     }
 
+    private void ConfigureStockMovement(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<StockMovement>(entity =>
+        {
+            entity.Property(x => x.Quantity)
+                .IsRequired();
+
+            entity.Property(x => x.CreatedAt)
+                .IsRequired();
+
+            entity.Property(x => x.Type)
+                .IsRequired();
+
+            entity.HasOne<Product>()
+                .WithMany()
+                .HasForeignKey(x => x.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
 
     private void ConfigureProduct(ModelBuilder modelBuilder)
     {
@@ -43,64 +60,12 @@ public class AppDbContext : DbContext
             entity.Property(p => p.IsActive)
                 .HasDefaultValue(true);
 
-            // Category (1:N)
-            entity.HasOne(p => p.Category)
-                .WithMany(c => c.Products)
-                .HasForeignKey(p => p.CategoryId)
-                .OnDelete(DeleteBehavior.SetNull);
+            // Index
+            entity.HasIndex(p => p.Name);
+            entity.HasIndex(p => p.IsActive);
         });
     }
 
-    private void ConfigureCategory(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Category>(entity =>
-        {
-            entity.Property(c => c.Name)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            entity.HasOne(c => c.ParentCategory)
-                .WithMany(c => c.SubCategories)
-                .HasForeignKey(c => c.ParentCategoryId)
-                .OnDelete(DeleteBehavior.Restrict); 
-        });
-    }
-
-    private void ConfigureTag(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Tag>(entity =>
-        {
-            entity.Property(t => t.Name)
-                .IsRequired()
-                .HasMaxLength(50);
-        });
-
-        // Many-to-Many
-        modelBuilder.Entity<Product>()
-            .HasMany(p => p.Tags)
-            .WithMany(t => t.Products)
-            .UsingEntity(j => j.ToTable("ProductTags"));
-    }
-
-    private void ConfigureProductBatch(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<ProductBatch>(entity =>
-        {
-            entity.Property(b => b.Quantity)
-                .IsRequired();
-
-            entity.Property(b => b.ReceivedAt)
-                .IsRequired();
-
-            entity.Property(b => b.ExpirationDate)
-                .IsRequired();
-
-            entity.HasOne(b => b.Product)
-                .WithMany(p => p.Batches)
-                .HasForeignKey(b => b.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-    }
 }
 
 

@@ -1,0 +1,10 @@
+﻿namespace Supermarket;
+
+public class UnitTest1
+{
+    [Fact]
+    public void Test1()
+    {
+
+    }
+}

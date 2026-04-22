@@ -1,13 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Supermarket.Application.Interfaces;
-using Supermarket.Application.Mapping;
-using Supermarket.Application.Services;
+//using Supermarket.Application.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Supermarket.Application.Products.Services;
+using Supermarket.Application.Products.Interfaces;
+using Supermarket.Application.Inventory.Interfaces;
+using Supermarket.Application.Inventory.Services;
 
 namespace Supermarket.Application
 {
@@ -15,13 +17,8 @@ namespace Supermarket.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddAutoMapper(cfg =>
-            {
-                cfg.AddProfile<ProductProfile>();
-            });
-
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IProductBatchService, ProductBatchService>();
+            services.AddScoped<IInventoryService, InventoryService>();
             return services;
         }
     }
