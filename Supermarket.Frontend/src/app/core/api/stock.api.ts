@@ -7,9 +7,19 @@ import { CreateStockMovement } from '../../features/inventory/models/stock-movem
 export class StockApi {
 
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:5226/api/stock';
+  private baseUrl = 'http://localhost:5226/api/inventory';
 
-  create(movement: CreateStockMovement) {
-    return this.http.post(this.baseUrl, movement);
+  add(productId: string, quantity: number) {
+    return this.http.post(`${this.baseUrl}/add`, {
+      productId,
+      quantity
+    });
+  }
+
+  sell(productId: string, quantity: number) {
+    return this.http.post(`${this.baseUrl}/sell`, {
+      productId,
+      quantity
+    });
   }
 }

@@ -8,9 +8,11 @@ namespace Supermarket.Domain.Enums
 {
     public enum StockMovementType
     {
-        Purchase,
-        Sale,
-        Adjustment,
-        Return
+        Purchase = 1,
+        Sale = 2,
+        Return = 3,
+        Adjustment = 4,
+        Expired = 5,
+        Transfer = 6
     }
 }

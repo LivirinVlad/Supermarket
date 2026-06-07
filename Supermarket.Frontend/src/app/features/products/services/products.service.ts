@@ -28,4 +28,10 @@ update(id: string, product: UpdateProduct) {
     this.loadProducts();
   });
 }
+
+delete(id: string) {
+  this.api.delete(id).subscribe(() => {
+    this.loadProducts();
+  });
+}
 }

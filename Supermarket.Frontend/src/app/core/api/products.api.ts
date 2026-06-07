@@ -22,4 +22,10 @@ update(id: string, product: UpdateProduct) {
   return this.http.put(`${this.baseUrl}/${id}`, product);
 }
 
+delete(id: string) {
+  return this.http.delete(
+    `${this.baseUrl}/${id}`
+  );
+}
+
 }

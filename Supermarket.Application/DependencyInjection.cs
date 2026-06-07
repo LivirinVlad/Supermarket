@@ -1,25 +1,33 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-//using Supermarket.Application.Mapping;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Supermarket.Application.Common.Behaviors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
-using Supermarket.Application.Products.Services;
-using Supermarket.Application.Products.Interfaces;
-using Supermarket.Application.Inventory.Interfaces;
-using Supermarket.Application.Inventory.Services;
+using FluentValidation;
 
-namespace Supermarket.Application
+namespace Supermarket.Application;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddApplication(
+        this IServiceCollection services)
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        services.AddMediatR(cfg =>
         {
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IInventoryService, InventoryService>();
-            return services;
-        }
+            cfg.RegisterServicesFromAssembly(
+                typeof(DependencyInjection).Assembly);
+        });
+
+        services.AddValidatorsFromAssembly(
+            typeof(DependencyInjection).Assembly);
+
+        services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(ValidationBehavior<,>));
+
+        return services;
     }
 }

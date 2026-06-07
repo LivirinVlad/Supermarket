@@ -85,17 +85,36 @@ export class ProductsPage implements OnInit {
     this.isStockModalOpen = false;
   }
 
-  createMovement(data: CreateStockMovement) {
-    if (!this.selectedProduct) return;
+createMovement(data: CreateStockMovement) {
 
-    this.stockService.create({
-      productId: this.selectedProduct.id,
-      quantity: data.quantity,
-      type: data.type,
-      note: data.note
-    }).subscribe(() => {
-      this.productsService.loadProducts();
-      this.closeStockModal();
-    });
-  }
+  if (!this.selectedProduct) return;
+
+  const handlers = {
+    Purchase: () =>
+      this.stockService.add(this.selectedProduct!.id, data.quantity),
+
+    Sale: () =>
+      this.stockService.sell(this.selectedProduct!.id, data.quantity),
+
+    // Return: () =>
+    //   this.stockService.return(this.selectedProduct!.id, data.quantity),
+
+    // Adjustment: () =>
+    //   this.stockService.adjust(
+    //     this.selectedProduct!.id,
+    //     data.quantity
+    //   )
+  };
+
+  const action = handlers[data.type];
+
+  if (!action) return;
+
+  action().subscribe(() => {
+    this.productsService.loadProducts();
+    this.closeStockModal();
+  });
+}
+
+
 }

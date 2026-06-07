@@ -6,7 +6,11 @@ import { CreateStockMovement } from '../models/stock-movement.model';
 export class StockService {
   constructor(private api: StockApi) {}
 
-  create(movement: CreateStockMovement) {
-    return this.api.create(movement);
+add(productId: string, quantity: number) {
+    return this.api.add(productId, quantity);
+  }
+
+  sell(productId: string, quantity: number) {
+    return this.api.sell(productId, quantity);
   }
 }
