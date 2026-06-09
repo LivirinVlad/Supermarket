@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Supermarket.Application.Common.Interfaces;
-using Supermarket.Domain.Entities;
+using Supermarket.Domain.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;

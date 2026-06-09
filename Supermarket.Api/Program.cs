@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Supermarket.Api.Endpoints;
+using Supermarket.Api.InventoryTransactions;
+using Supermarket.Api.Products;
 using Supermarket.Application;
 using Supermarket.Infrastructure;
 using Supermarket.Infrastructure.Data;
@@ -43,6 +44,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 
 app.MapProductEndpoints();
-app.MapInventoryEndpoints();
+app.MapInventoryTransactionsEndpoints();
+app.MapStockBalancesEndpoints();
 
 app.Run();

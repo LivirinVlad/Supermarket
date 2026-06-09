@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Supermarket.Application.Common.Interfaces;
-using Supermarket.Domain.Entities;
+using Supermarket.Domain.InventoryTransaction;
+using Supermarket.Domain.Product;
+using Supermarket.Domain.StockBalance;
 
 namespace Supermarket.Infrastructure.Data;
 
@@ -10,11 +12,17 @@ public class AppDbContext
     public DbSet<Product> Products
         => Set<Product>();
 
-    public DbSet<StockItem> StockItems =>
-        Set<StockItem>();
+    public DbSet<InventoryTransaction>
+        InventoryTransactions =>
+            Set<InventoryTransaction>();
 
-    public DbSet<StockMovement> StockMovements =>
-        Set<StockMovement>();
+    public DbSet<InventoryTransactionLine>
+        InventoryTransactionLines =>
+            Set<InventoryTransactionLine>();
+
+    public DbSet<StockBalance>
+        StockBalances =>
+            Set<StockBalance>();
 
 
     public AppDbContext(
